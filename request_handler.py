@@ -3,7 +3,7 @@ import json
 from animals import get_all_animals, get_single_animal, create_animal
 from locations import get_all_locations, get_single_location, create_location
 from customers import get_all_customers, get_single_customer
-from employees import get_all_employees, get_single_employee
+from employees import get_all_employees, get_single_employee, create_employee
 
 
 # Here's a class. It inherits from another class.
@@ -94,23 +94,23 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         # Initialize new animal
-        new_animal = None
+        new_entry = None
         # Initialize new location
-        new_location = None
 
         # Add a new animal to the list. Don't worry about
         # the orange squiggle, you'll define the create_animal
         # function next.
         if resource == "animals":
-            new_animal = create_animal(post_body)
-
-        # Encode the new animal and send in response
-        self.wfile.write(f"{new_animal}".encode())
+            new_entry = create_animal(post_body)
+            
         if resource == "locations":
-            new_location = create_location(post_body)
+            new_entry = create_location(post_body)
 
-        # Encode the new location and send in response
-        self.wfile.write(f"{new_location}".encode())
+        if resource == "employees":
+            new_entry = create_employee(post_body)
+
+        # Encode the new employee and send in response
+        self.wfile.write(f"{new_entry}".encode())
     # Here's a method on the class that overrides the parent's method.
     # It handles any PUT request.
     def do_PUT(self):
