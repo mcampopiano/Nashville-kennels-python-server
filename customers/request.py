@@ -19,18 +19,30 @@ CUSTOMERS = [
 
 # Function with a single parameter
 def get_single_customer(id):
-    # Variable to hold the found customer, if it exists
-    requested_customer = None
+    with sqlite3.connect("./kennel.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-    # Iterate the ANIMALS list above. Very similar to the
-    # for..of loops you used in JavaScript.
-    for customer in CUSTOMERS:
-        # Dictionaries in Python use [] notation to find a key
-        # instead of the dot notation that JavaScript used.
-        if customer["id"] == id:
-            requested_customer = customer
+        # Use a ? parameter to inject a variable's value
+        # into the SQL statement.
+        db_cursor.execute("""
+        SELECT
+            c.id,
+            c.name,
+            c.address,
+            c.email,
+            c.password
+        FROM customer c
+        WHERE c.id = ?
+        """, ( id, ))
 
-    return requested_customer
+        # Load the single result into memory
+        data = db_cursor.fetchone()
+
+        # Create an customer instance from the current row
+        customer = Customer(data['id'], data['name'], data['address'], data['email'], data['password'],)
+
+        return json.dumps(customer.__dict__)
 
 def create_customer(customer):
     # Get the id value of the last customer in the list
