@@ -65,4 +65,4 @@ SELECT
     a.location_id,
     a.customer_id
 FROM animal a
-WHERE a.id = 3
+WHERE a.id = 3;
