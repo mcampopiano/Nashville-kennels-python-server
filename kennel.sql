@@ -66,3 +66,5 @@ SELECT
     a.customer_id
 FROM animal a
 WHERE a.id = 3;
+
+DROP TABLE employee;
