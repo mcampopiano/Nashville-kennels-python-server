@@ -68,3 +68,5 @@ FROM animal a
 WHERE a.id = 3;
 
 DROP TABLE employee;
+
+SELECT * FROM animal;
